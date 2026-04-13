@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sincronización avanzada</title>
+
+    <!-- CDN de libreria de react  -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <!-- CDN de libreria de react dom -->
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- CDN de libreria de babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+    <header>
+    </header>
+
+
+    <main>
+        <!-- contenedor donde se renderiza (O pinta) la web o aplicación -->
+        <div id="root"></div>
+    </main>
+
+
+    <footer>
+    </footer>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const App = () => {
+
+            const [contador, setContador] = useState( ()=>{return Number(localStorage.getItem("contador")) || 0; });
+            const [activar, setActivar] = useState(false);
+
+            useEffect(
+                () => {
+                    if (!activar) return
+
+                    const timeOut = setInterval(
+                        () => {
+                            setContador((prev) => prev + 1)
+                        }, 1000
+                    );
+
+                    return () => {
+                        clearInterval(timeOut)
+                    };
+
+                }, [activar]
+            );
+
+            useEffect(() => {
+                document.title = `Contador: ${contador}`;
+            }, [contador]);
+
+            useEffect(() => {
+                localStorage.setItem("contador", contador);
+            }, [contador]);
+
+            return (
+                <div className="">
+                    <h1>Reto</h1>
+                    <ul>
+                        <li>Crea un useState para el contador y otro para el estado de encendido</li>
+                        <li>Crea varios botones: suma 1, resta 1, iniciar autoincremento y detener</li>
+                        <li>Crea varios useEffect</li>
+                        <ul>
+                            <li>Auto incremento con setTimeOut</li>
+                            <li>Cambio de titulo: agregar en la pestaña el número</li>
+                            <li>Guardar en localStorage el número del contador</li>
+                        </ul>
+                    </ul>
+
+                    <h2>{contador}</h2>
+                    <button onClick={() => setContador((prev) => prev - 1)}>-</button>
+                    <button onClick={() => setContador((prev) => prev + 1)}>+</button>
+                    <button onClick={() => setActivar(true)}>▶️</button>
+                    <button onClick={() => setActivar(false)}>⏹️</button>
+
+
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(<App />)
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temporizador de efecto cada segundo</title>
+
+    <!-- CDN de libreria de react  -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <!-- CDN de libreria de react dom -->
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- CDN de libreria de babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+    <header>
+    </header>
+
+
+    <main>
+        <!-- contenedor donde se renderiza (O pinta) la web o aplicación -->
+        <div id="root"></div>
+    </main>
+
+
+    <footer>
+    </footer>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const App = () => {
+
+            const [contador, setContador] = useState(0);
+
+            useEffect(() => {
+                console.log(`useEffect ejecutado `);
+
+                setInterval( () => {
+                    setContador(e => e +1)
+                }, 1000);
+
+            }, [contador]
+            );
+
+            return (
+                <div className="">
+                    <h1>Reto</h1>
+                    <ul>
+                        <li>Crear un contador que aumente cada segundo, utiliza "setInterval"</li>
+                        <li>Utiliza un console.log, para ver en terminal, las veces en que se manifiesta el efecto</li>
+                    </ul>
+
+                    <p>{contador}</p>
+
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(<App />)
+
+    </script>
+
+</body>
+
+</html>

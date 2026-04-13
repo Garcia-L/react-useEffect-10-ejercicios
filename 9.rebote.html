@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rebote</title>
+
+    <!-- CDN de libreria de react  -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <!-- CDN de libreria de react dom -->
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- CDN de libreria de babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+    <header>
+    </header>
+
+
+    <main>
+        <!-- contenedor donde se renderiza (O pinta) la web o aplicación -->
+        <div id="root"></div>
+    </main>
+
+
+    <footer>
+    </footer>
+
+    <script type="text/babel">
+
+        const { useState, useEffect } = React;
+
+        const App = () => {
+
+            const [busqueda, setBusqueda] = useState("");
+            const [resultado, setResultado] = useState([]);
+
+            const usuarios = ["Beto", "Chan", "Luck", "Hunter"];
+
+            useEffect(
+                () => {
+
+                    const timeout = setTimeout(() => {
+                        console.log("Ejecutando useEffect");
+                        const filtro = usuarios.filter((e) => e.includes(busqueda));
+                        setResultado(filtro);
+                    }, 1000)
+
+                    return () => {
+                        clearTimeout(timeout);
+                        console.log("Se limpió el timeout")
+                    }
+
+                }, [busqueda]
+            );
+
+            return (
+                <div className="">
+                    <h1>Reto</h1>
+                    <ul>
+                        <li>Crea un input, cada vez que cambie simule una consulta de usuarios</li>
+                        <li>Crea un array de usuarios con 4 nombres</li>
+                        <li>Usa useState para busqueda y resultado</li>
+                        <li>Usa useEffect para la consulta</li>
+                        <li>Evita que el efecto se ejecute al presionar cada tecla</li>
+                        <ul>
+                            <li>Solo después de 1 segundo sin escribir</li>
+                            <li>usa, setTimeout y clearTimeout como cleanUp</li>
+                        </ul>
+                    </ul>
+
+                    <input type="text" onChange={(e) => { setBusqueda(e.target.value) }} />
+                    <ul>
+                        {
+                            resultado.map(
+                                (e, index) => (
+                                    < li key={index} > {e}</li>
+                                )
+                            )
+                        }
+                    </ul>
+                </div >
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(<App />)
+
+    </script>
+
+</body>
+
+</html>
